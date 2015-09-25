@@ -1,2 +1,2 @@
-# babel-grunt-boilerplate
-A simple &amp; clean babel grunt boilerplate
+# babel-me
+Build a Babel Grunt Enviroment in one single line
