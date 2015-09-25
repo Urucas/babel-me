@@ -1,0 +1,37 @@
+{
+  "name": "babel-me",
+  "version": "0.0.1",
+  "description": "A simple & clean babel grunt boilerplate",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "preferGlobal": true,
+  "bin": {
+    "babel-me" : "./cli.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Urucas/babel-me.git"
+  },
+  "keywords": [
+    "babel",
+    "grunt",
+    "es6",
+    "boilerplate"
+  ],
+  "author": "Urucas <hello@urucas.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Urucas/babel-me/issues"
+  },
+  "homepage": "https://github.com/Urucas/babel-me#readme",
+  "dependencies": {
+    "grunt": "^0.4.5",
+    "grunt-contrib-copy": "^0.8.1",
+    "grunt-mkdir": "^0.1.2",
+    "grunt-npm-install": "^0.2.0",
+    "load-grunt-tasks": "^3.3.0",
+    "semafor": "0.0.1"
+  }
+}
