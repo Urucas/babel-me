@@ -93,6 +93,11 @@ function main() {
     var grunt_src = path.join(__dirname, 'src', 'Gruntfile.js')
     var grunt_dest = path.join(process.cwd(), 'Gruntfile.js')
     copySync(grunt_src, grunt_dest)
+
+    // copy index.js 
+    var index_src = path.join(__dirname, 'src', 'index.js')
+    var index_dest = path.join(process.cwd(), 'lib', 'index.js')
+    
     logger.ok("Babel environment ready. Now start coding, you have a dog to feed!")
   });
 }
