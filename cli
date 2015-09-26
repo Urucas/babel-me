@@ -37,6 +37,7 @@ function addBuildScript(json) {
     json["scripts"] = {}
   }
   json["scripts"]["build"] = "./node_modules/grunt-cli/bin/grunt build"
+  json["scripts"]["tests"] = "./node_modules/mocha/bin/mocha tests/* --compilers js:babel/register -t 15s"
   return json
 }
 
@@ -80,24 +81,30 @@ function main() {
   json_string = JSON.stringify(json, null, "  ")
   fs.writeFileSync(package_json, json_string)
    
-  // create lib, dist folders
+  // create lib, dist, tests folders
   mkdirSync(path.join(process.cwd(),'lib'))
   logger.ok("Creating lib directory")
   mkdirSync(path.join(process.cwd(),'dist'))
   logger.ok("Creating dist directory")
-  
+  mkdirSync(path.join(process.cwd(),'tests'))
+  logger.ok("Creating tests directory")
+
+  // copy babel Gruntfile.js
+  var grunt_src = path.join(__dirname, 'src', 'Gruntfile.js')
+  var grunt_dest = path.join(process.cwd(), 'Gruntfile.js')
+  copySync(grunt_src, grunt_dest)
+
+  // copy index.js 
+  var index_src = path.join(__dirname, 'src', 'index.js')
+  var index_dest = path.join(process.cwd(), 'lib', 'index.js')
+    
+  // copy test.js
+  var test_src = path.join(__dirname, 'src', 'test.js')
+  var test_dest = path.join(process.cwd(), 'tests', 'test.js')
+
   // install npm dependencies
   logger.log("Installing npm dependencies")
   installNpmDependencies( function() {
-    // copy babel Gruntfile.js
-    var grunt_src = path.join(__dirname, 'src', 'Gruntfile.js')
-    var grunt_dest = path.join(process.cwd(), 'Gruntfile.js')
-    copySync(grunt_src, grunt_dest)
-
-    // copy index.js 
-    var index_src = path.join(__dirname, 'src', 'index.js')
-    var index_dest = path.join(process.cwd(), 'lib', 'index.js')
-    
     logger.ok("Babel environment ready. Now start coding, you have a dog to feed!")
   });
 }
