@@ -11,7 +11,7 @@ npm install -g babel-me
 babel-me
 ```
 babel-me will copy to your local repository the **lib**, **dist** folders and the **Gruntfile.js**
-```
+``` dir
 .
 |─── lib/index.js
 |─── dist/
@@ -19,7 +19,7 @@ babel-me will copy to your local repository the **lib**, **dist** folders and th
 |─── Gruntfile.js
 ```
 and add to your **package.json** the required dependencies and scripts
-```
+```json
 ...
 "scripts":{
   "build" : "./node_modules/grunt-cli/bin/grunt build",
