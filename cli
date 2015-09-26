@@ -77,8 +77,9 @@ function main() {
   json = addBuildScript(json)
   
   // update json
-  fs.writeFileSync(package_json, JSON.stringify(json))
-  
+  json_string = JSON.stringify(json, null, "  ")
+  fs.writeFileSync(package_json, json_string)
+   
   // create lib, dist folders
   mkdirSync(path.join(process.cwd(),'lib'))
   logger.ok("Creating lib directory")
@@ -93,7 +94,7 @@ function main() {
     var grunt_dest = path.join(process.cwd(), 'Gruntfile.js')
     copySync(grunt_src, grunt_dest)
     logger.ok("Babel environment ready. Now start coding, you have a dog to feed!")
-  }, dependencies);
+  });
 }
 
 main();
