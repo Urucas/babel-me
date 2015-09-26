@@ -1,14 +1,99 @@
 #!/usr/bin/env node
+var child_process = require('child_process')
+var path = require('path')
+var fs = require('fs')
+var logger = require('semafor')()
+var mkdirp = require('mkdirp')
+var dependencies = {
+  "babel": "^5.8.23",
+  "grunt": "^0.4.5",
+  "grunt-babel": "^5.0.3",
+  "load-grunt-tasks": "^3.3.0",
+  "mocha": "^2.3.3"
+}
 
-var child_process = require('child_process');
-var spawn  = child_process.spawn('grunt', ['build'])
-var logger = require('semafor')();
-spawn.stdout.on('data', function(data){
-  logger.log(data + " ");
-});
-spawn.stderr.on('data', function(data){
-  logger.fail(data + " ");
-});
-spawn.on('close', function() {
-  logger.ok("Babel environment created. Now start coding you!")
-});
+function copySync(src, dest) {
+  var source = fs.readFileSync(src)
+  fs.writeFileSync(dest, source)
+}
+
+function mkdirSync(dir) {
+  mkdirp.sync(dir)  
+}
+
+function addDependencies(json) {
+  if(json["devDependencies"] == undefined) {
+    json["devDependencies"] = {};
+  }
+  for(var i in dependencies) {
+    var dependency = dependencies[i];
+    json["devDependencies"][i] = dependencies[i]
+  }
+  return json
+}
+
+function addBuildScript(json) {
+  if(json["scripts"]  == undefined) {
+    json["scripts"] = {}
+  }
+  json["scripts"]["build"] = "./node_modules/grunt-cli/bin/grunt build"
+  return json
+}
+
+function installNpmDependencies(cb) {
+  var spawn  = child_process.spawn('npm', ['install'])
+  spawn.stdout.on('data', function(data){
+    logger.log(data + " ");
+  });
+  spawn.stderr.on('data', function(data){
+    logger.fail(data + " ");
+  });
+  spawn.on('close', function() {
+    cb();
+  });
+}
+
+function verifyEnv(package_json) {
+  try {
+    return fs.accessSync(package_json, fs.W_ok)
+  }catch(e) {
+    return e
+  }
+}
+
+function main() {
+  // check env has package.json
+  var package_json = path.join(process.cwd(), 'package.json')
+  var err = verifyEnv(package_json);
+  if(err != null) {
+    logger.fail(err.message);
+    return;
+  }
+  logger.ok("Checking npm environment")
+  var json = require(package_json)
+  // add devDependencies
+  json = addDependencies(json)
+  // add build script
+  json = addBuildScript(json)
+  
+  // update json
+  fs.writeFileSync(package_json, JSON.stringify(json))
+  
+  // create lib, dist folders
+  mkdirSync(path.join(process.cwd(),'lib'))
+  logger.ok("Creating lib directory")
+  mkdirSync(path.join(process.cwd(),'dist'))
+  logger.ok("Creating dist directory")
+  
+  // install npm dependencies
+  logger.log("Installing npm dependencies")
+  installNpmDependencies( function() {
+    // copy babel Gruntfile.js
+    var grunt_src = path.join(__dirname, 'src', 'Gruntfile.js')
+    var grunt_dest = path.join(process.cwd(), 'Gruntfile.js')
+    copySync(grunt_src, grunt_dest)
+    logger.ok("Babel environment ready. Now start coding, you have a dog to feed!")
+  }, dependencies);
+}
+
+main();
