@@ -37,7 +37,7 @@ function addBuildScript(json) {
     json["scripts"] = {}
   }
   json["scripts"]["build"] = "./node_modules/grunt-cli/bin/grunt build"
-  json["scripts"]["tests"] = "./node_modules/mocha/bin/mocha tests/* --compilers js:babel/register -t 15s"
+  json["scripts"]["test"] = "./node_modules/mocha/bin/mocha tests/* --compilers js:babel/register -t 15s"
   return json
 }
 
@@ -97,10 +97,12 @@ function main() {
   // copy index.js 
   var index_src = path.join(__dirname, 'src', 'index.js')
   var index_dest = path.join(process.cwd(), 'lib', 'index.js')
-    
+  copySync(index_src, index_dest)
+
   // copy test.js
   var test_src = path.join(__dirname, 'src', 'test.js')
   var test_dest = path.join(process.cwd(), 'tests', 'test.js')
+  copySync(test_src, test_dest)
 
   // install npm dependencies
   logger.log("Installing npm dependencies")
