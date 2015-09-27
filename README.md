@@ -10,7 +10,7 @@ npm install -g babel-me
 ```bash
 babel-me
 ```
-babel-me will copy to your local repository the **lib**, **dist** folders and the **Gruntfile.js**
+babel-me will create into your repository a **lib**, **dist** folder and a **Gruntfile.js**;
 ``` dir
 .
 |─── lib/index.js
@@ -18,7 +18,7 @@ babel-me will copy to your local repository the **lib**, **dist** folders and th
 |─── tests/test.js
 |─── Gruntfile.js
 ```
-and add to your **package.json** the required dependencies and scripts
+then add the required dependencies and scripts to use and build your babel lib
 ```json
 ...
 "scripts":{
@@ -34,4 +34,4 @@ and add to your **package.json** the required dependencies and scripts
   "mocha": "^2.3.3"
 }
 ```
-And thats all! Simple and with minimal dependencies.
+Thats all! Simple and with minimum dependencies.
