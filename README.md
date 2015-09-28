@@ -1,5 +1,5 @@
 # babel-me
-Are you planning to use [babel](https://babeljs.io/) in your next project ? Build a Babel enviroment in one single line
+Are you planning to use [babel](https://babeljs.io/) in your next project ? Build a Babel environment in one single line
 
 #Install
 ```bash
