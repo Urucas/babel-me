@@ -28,7 +28,7 @@ then add the required dependencies and scripts to use and build your babel lib
 ...
 "devDependencies" : {
   "babel": "^5.8.23",
-  "grunt": "^0.4.5",
+  "grunt-cli": "^0.1.13",
   "grunt-babel": "^5.0.3",
   "load-grunt-tasks": "^3.3.0",
   "mocha": "^2.3.3"
