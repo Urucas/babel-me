@@ -35,3 +35,7 @@ then add the required dependencies and scripts to use and build your babel lib
 }
 ```
 Thats all! Simple and with minimum dependencies.
+
+**Related**
+
+A babel boilerplate for Yeoman  [https://github.com/babel/generator-babel-boilerplate](https://github.com/babel/generator-babel-boilerplate)
