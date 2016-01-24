@@ -10,32 +10,34 @@ npm install -g babel-me
 ```bash
 babel-me
 ```
-babel-me will create into your repository a **lib**, **dist** folder and a **Gruntfile.js**;
+
+Create a simple environment for you to start coding in es6, it will add
+a lib/index.js file, a dist folder, and an example tests/test.js in es6 to use
+with mocha, and the .babelrc configuration file
 ``` dir
 .
-|─── lib/index.js
-|─── dist/
-|─── tests/test.js
-|─── Gruntfile.js
+|___ lib/index.js
+|___ dist/
+|___ tests/test.js
+|___ .babelrc
 ```
 then add the required dependencies and scripts to use and build your babel lib
 ```json
 ...
 "scripts":{
-  "build" : "./node_modules/grunt-cli/bin/grunt build",
-  "test" : "./node_modules/mocha/bin/mocha tests/* --compilers js:babel/register -t 15s"
+  "build" : "./node_modules/babel-cli/bin/babel.js lib -d dist",
+  "test" : "./node_modules/mocha/bin/mocha tests/* --compilers js:babel-core/register -t 15s"
 },
-...
-"devDependencies" : {
-  "babel": "^5.8.23",
-  "grunt-cli": "^0.1.13",
-  "grunt-babel": "^5.0.3",
-  "load-grunt-tasks": "^3.3.0",
-  "mocha": "^2.3.3"
-}
 ```
+Dependencies added to your package.json
+
+* babel-cli
+* babel-core
+* babel-preset-es2015
+* mocha
+
 Thats all! Simple and with minimum dependencies.
 
 **Related**
 
-A babel boilerplate for Yeoman  [https://github.com/babel/generator-babel-boilerplate](https://github.com/babel/generator-babel-boilerplate)
+A babel boilerplate for Yeoman [https://github.com/babel/generator-babel-boilerplate](https://github.com/babel/generator-babel-boilerplate)
