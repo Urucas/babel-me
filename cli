@@ -48,6 +48,8 @@ function copySync(src, dest) {
 }
 
 function main() {
+
+
   // check env has package.json
   var package_json = path.join(process.cwd(), 'package.json')
   var err = verifyEnv(package_json);
@@ -79,20 +81,56 @@ function main() {
   logger.ok("Creating tests directory")
 
   // copy index.js 
-  var index_src = path.join(__dirname, 'src', 'index.js')
-  var index_dest = path.join(process.cwd(), 'lib', 'index.js')
-  copySync(index_src, index_dest)
+  try {
+    stats = fs.lstatSync(path.join(process.cwd(), 'lib','index.js'))
+    if(stats.isFile()) {
+      logger.warn("Avoid copying index.js, you already have a file in your lib folder")
+    }else{
+      var index_src = path.join(__dirname, 'src', 'index.js')
+      var index_dest = path.join(process.cwd(), 'lib', 'index.js')
+      copySync(index_src, index_dest)
+    }
+  }catch(e){
+    var index_src = path.join(__dirname, 'src', 'index.js')
+    var index_dest = path.join(process.cwd(), 'lib', 'index.js')
+    copySync(index_src, index_dest)
+  }
 
   // copy test.js
-  var test_src = path.join(__dirname, 'src', 'test.js')
-  var test_dest = path.join(process.cwd(), 'tests', 'test.js')
-  copySync(test_src, test_dest)
-
+  try {
+    stats = fs.lstatSync(path.join(process.cwd(), 'tests','test.js'))
+    if(stats.isFile()) {
+      logger.warn("Avoid copying tst.js, you already have a file in your test folder")
+    }else{
+      var test_src = path.join(__dirname, 'src', 'test.js')
+      var test_dest = path.join(process.cwd(), 'tests', 'test.js')
+      copySync(test_src, test_dest)
+    }
+  }catch(e) {
+    var test_src = path.join(__dirname, 'src', 'test.js')
+    var test_dest = path.join(process.cwd(), 'tests', 'test.js')
+    copySync(test_src, test_dest)
+  }
+  
   // add .babelrc
   var presets = {"presets": ["es2015"],"plugins":[]}
-  babelrc_string = JSON.stringify(presets, null, " ") 
-  fs.writeFileSync(".babelrc", babelrc_string)
-  logger.ok("Creating .babelrc configuration file")
+  try {
+    babelrc = fs.lstatSync(path.join(process.cwd(), '.babelrc'))
+    if(babelrc.isFile()) {
+      presets = fs.readFileSync(path.join(process.cwd(), '.babelrc')).toString()
+      presets = JSON.parse(presets)
+      var list = presets["presets"] || []
+      if(list.indexOf("es2015") == -1) {
+        list.push("es2015")
+      }
+      presets["presets"] = list
+      babelrc_string = JSON.stringify(presets, null, " ")
+      fs.writeFileSync(".babelrc", babelrc_string)
+      logger.ok("Adding es-2015 preset to .babelrc configuration file")
+    }
+  }catch(e) { 
+    logger.warn("Error adding es-2015 to .babelrc, please add it manually")
+  }
   
   // install npm dependencies
   var dependencies = ["babel-cli", "babel-core", "babel-preset-es2015", "mocha"]
