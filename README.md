@@ -11,25 +11,24 @@ npm install -g babel-me
 babel-me
 ```
 
-Create a simple environment for you to start coding in es6, it will add
-a lib/index.js file, a dist folder, and an example tests/test.js in es6 to use
-with mocha, and the .babelrc configuration file
+Create a simple environment for start coding in es6 with babel. 
 ``` dir
 .
-|___ lib/index.js
-|___ dist/
-|___ tests/test.js
-|___ .babelrc
+|___ lib/index.js     <-- base es6 file
+|___ dist/            <-- distribution folder
+|___ tests/test.js    <-- base es6 test based on mocha
+|___ .babelrc         <-- babel configuration file
 ```
-then add the required dependencies and scripts to use and build your babel lib
+Aumatically add scripts to use and build your babel lib
 ```json
 ...
 "scripts":{
   "build" : "./node_modules/babel-cli/bin/babel.js lib -d dist",
-  "test" : "./node_modules/mocha/bin/mocha tests/* --compilers js:babel-core/register -t 15s"
+  "test" : "./node_modules/mocha/bin/mocha tests/* --compilers js:babel-core/register -t 15s",
+  "prepublish" : "npm run build"
 },
 ```
-Dependencies added to your package.json
+Install the minimumm required dependencies
 
 * babel-cli
 * babel-core
