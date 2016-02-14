@@ -124,12 +124,14 @@ function main() {
         list.push("es2015")
       }
       presets["presets"] = list
-      babelrc_string = JSON.stringify(presets, null, " ")
-      fs.writeFileSync(".babelrc", babelrc_string)
+      var babelrc_string = JSON.stringify(presets, null, " ")
+      fs.writeFileSync(path.join(process.cwd(), '.babelrc'), babelrc_string)
       logger.ok("Adding es-2015 preset to .babelrc configuration file")
     }
   }catch(e) { 
-    logger.warn("Error adding es-2015 to .babelrc, please add it manually")
+    var babelrc_string = JSON.stringify(presets, null, " ")
+    fs.writeFileSync(path.join(process.cwd(), '.babelrc'), babelrc_string)
+    logger.ok("Creating .babelrc configuration file")
   }
   
   // install npm dependencies
