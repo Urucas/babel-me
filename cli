@@ -39,7 +39,7 @@ function verifyEnv(package_json) {
 }
 
 function mkdirSync(dir) {
-  mkdirp.sync(dir)  
+  mkdirp.sync(dir)
 }
 
 function copySync(src, dest) {
@@ -48,7 +48,6 @@ function copySync(src, dest) {
 }
 
 function main() {
-
 
   // check env has package.json
   var package_json = path.join(process.cwd(), 'package.json')
@@ -59,7 +58,7 @@ function main() {
   }
   logger.ok("Checking npm environment")
   var json = require(package_json)
-  
+
   // add build script
   var scripts = {
     "build" : "./node_modules/babel-cli/bin/babel.js lib -d dist",
@@ -80,7 +79,7 @@ function main() {
   mkdirSync(path.join(process.cwd(),'tests'))
   logger.ok("Creating tests directory")
 
-  // copy index.js 
+  // copy index.js
   try {
     stats = fs.lstatSync(path.join(process.cwd(), 'lib','index.js'))
     if(stats.isFile()) {
@@ -111,7 +110,7 @@ function main() {
     var test_dest = path.join(process.cwd(), 'tests', 'test.js')
     copySync(test_src, test_dest)
   }
-  
+
   // add .babelrc
   var presets = {"presets": ["es2015"],"plugins":[]}
   try {
@@ -124,18 +123,27 @@ function main() {
         list.push("es2015")
       }
       presets["presets"] = list
+      plugins = presets["plugins"] || []
+      if(plugins.indexOf("transform-async-to-generator") == -1) {
+        pluguns.push("transform-async-to-generator")
+      }
+      if(plugins.indexOf("transform-runtime") == -1) {
+        pluguns.push("transform-runtime")
+      }
+      presets["plugins"] = plugins;
       var babelrc_string = JSON.stringify(presets, null, " ")
       fs.writeFileSync(path.join(process.cwd(), '.babelrc'), babelrc_string)
-      logger.ok("Adding es-2015 preset to .babelrc configuration file")
+      logger.ok("Adding babel presets & plugins preset to .babelrc configuration file")
     }
-  }catch(e) { 
+  }catch(e) {
     var babelrc_string = JSON.stringify(presets, null, " ")
     fs.writeFileSync(path.join(process.cwd(), '.babelrc'), babelrc_string)
     logger.ok("Creating .babelrc configuration file")
   }
-  
+
   // install npm dependencies
-  var dependencies = ["babel-cli", "babel-core", "babel-preset-es2015", "mocha"]
+  var dependencies = ["babel-cli", "babel-core", "mocha", "babel-preset-es2015", "babel-plugin-transform-runtime", "babel-plugin-transform-async-to-generator"]
+  if()
   logger.log("Installing npm dependencies, this may take a while!")
   installNpmDependencies(dependencies, function() {
     logger.ok("Babel environment ready. Now start coding, you have a dog to feed!")
