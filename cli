@@ -143,7 +143,6 @@ function main() {
 
   // install npm dependencies
   var dependencies = ["babel-cli", "babel-core", "mocha", "babel-preset-es2015", "babel-plugin-transform-runtime", "babel-plugin-transform-async-to-generator"]
-  if()
   logger.log("Installing npm dependencies, this may take a while!")
   installNpmDependencies(dependencies, function() {
     logger.ok("Babel environment ready. Now start coding, you have a dog to feed!")
