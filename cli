@@ -112,7 +112,7 @@ function main() {
   }
 
   // add .babelrc
-  var presets = {"presets": ["es2015"],"plugins":[]}
+  var presets = {"presets": ["es2015"],"plugins":["transform-async-to-generator","transform-runtime"]}
   try {
     babelrc = fs.lstatSync(path.join(process.cwd(), '.babelrc'))
     if(babelrc.isFile()) {
@@ -125,10 +125,10 @@ function main() {
       presets["presets"] = list
       plugins = presets["plugins"] || []
       if(plugins.indexOf("transform-async-to-generator") == -1) {
-        pluguns.push("transform-async-to-generator")
+        plugins.push("transform-async-to-generator")
       }
       if(plugins.indexOf("transform-runtime") == -1) {
-        pluguns.push("transform-runtime")
+        plugins.push("transform-runtime")
       }
       presets["plugins"] = plugins;
       var babelrc_string = JSON.stringify(presets, null, " ")
